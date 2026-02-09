@@ -1,23 +1,36 @@
 full_dot = '●'
 empty_dot = '○'
-
-
-def create_character(name, strength, intelligence, charisma):
+def create_character(name,strength,intelligence,charisma):
+   
+    if not isinstance(name, str): 
+        return "The character name should be a string"
+    if len(name)>10:
+       return "The character name is too long"
+    if not name:
+      return "The character should have a name"
+    if ' ' in name:
+      return "The character name should not contain spaces"
     
-    if not isinstance(name, str):
-     print("The character name should be a string")
-    if name == "":
-        print("The character should have a name")
-    if name.long() > 10:
-        print("The character name is too long")
-    if "" in name:
-        print("The character name should not contain spaces")
+ 
 
-    if not all(isinstance(stat, int) for stat in [strength, intelligence, charisma]):
-        print("All stats should be integers")
-    if any(stat < 1 for stat in [strength, intelligence, charisma]):
-        print("All stats should be no less than 1")
-    if any(stat > 4 for stat in [strength, intelligence, charisma]):
-        print("All stats should be no more than 4")
-    if strength + intelligence + charisma > 7:
-        print("The character should start with 7 points")
+    stats={'STR': strength,'INT': intelligence, 'CHA': charisma }
+    for stat in stats.values():
+        if not isinstance(stat, int):
+            return "All stats should be integers"
+    for stat in stats.values():
+        if stat < 1:
+            return "All stats should be no less than 1"
+    for stat in stats.values():
+        if stat > 4:
+            return "All stats should be no more than 4"
+    if sum(stats.values()) != 7 :
+        return "The character should start with 7 points"
+
+    character_string=name
+    for key in ['STR', 'INT', 'CHA']:
+        stat = stats[key]
+        character_string += f'\n{key} {full_dot*stat}{empty_dot*(10-stat)}'
+
+    return character_string  
+
+print(create_character("ren",4,2,1))
